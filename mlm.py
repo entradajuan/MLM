@@ -21,6 +21,19 @@ tokenizer.train(files=paths, vocab_size=52_000, min_frequency=2, special_tokens=
     "<mask>",
 ])
 
+import os
+from google.colab import drive
+drive.mount('/content/gdrive')
+
+output_dir = '/content/gdrive/MyDrive/Machine Learning/datos/MLM/modelos/model_saveTMP'
+
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
+print("Saving tokenizer to %s" % output_dir)
+
+tokenizer.save_model(output_dir)
+
 from tokenizers.implementations import ByteLevelBPETokenizer
 from tokenizers.processors import BertProcessing
 
@@ -49,6 +62,18 @@ print(config)
 
 from transformers import RobertaTokenizer
 tokenizer = RobertaTokenizer.from_pretrained("./KantaiBERT", max_length=512)
+
+from transformers import RobertaForMaskedLM
+
+model = RobertaForMaskedLM(config=config)
+print(model)
+print(model.num_parameters())
+
+LP=list(model.parameters())
+lp=len(LP)
+print(lp)
+for p in range(0,lp):
+  print(LP[p])
 
 
 
