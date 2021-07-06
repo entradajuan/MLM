@@ -75,7 +75,19 @@ print(lp)
 for p in range(0,lp):
   print(LP[p])
 
+from transformers import LineByLineTextDataset
 
+dataset1 = LineByLineTextDataset(
+    tokenizer=tokenizer,
+    file_path="./TheStoryOfGermLife.txt",
+    block_size=128,
+)
+
+dataset2 = LineByLineTextDataset(
+    tokenizer=tokenizer,
+    file_path="./BacteriologicalTechnique.txt",
+    block_size=128,
+)
 
 
 
