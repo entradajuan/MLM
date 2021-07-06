@@ -61,7 +61,7 @@ config = RobertaConfig(
 print(config)
 
 from transformers import RobertaTokenizer
-tokenizer = RobertaTokenizer.from_pretrained("./KantaiBERT", max_length=512)
+tokenizer = RobertaTokenizer.from_pretrained(output_dir, max_length=512)
 
 from transformers import RobertaForMaskedLM
 
