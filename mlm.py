@@ -89,5 +89,43 @@ dataset2 = LineByLineTextDataset(
     block_size=128,
 )
 
+from transformers import DataCollatorForLanguageModeling
 
+data_collator = DataCollatorForLanguageModeling(
+    tokenizer=tokenizer, mlm=True, mlm_probability=0.15
+)
+
+from transformers import Trainer, TrainingArguments
+
+training_args = TrainingArguments(
+    output_dir=output_dir,
+    overwrite_output_dir=True,
+    num_train_epochs=1,
+    per_device_train_batch_size=64,
+    save_steps=10_000,
+    save_total_limit=2,
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    data_collator=data_collator,
+    train_dataset=dataset1,
+)
+
+trainer.train()
+
+trainer.save_model(output_dir)
+
+
+print("Testing it!!______________________________________")
+from transformers import pipeline
+
+fill_mask = pipeline(
+    "fill-mask",
+    model=output_dir,
+    tokenizer=output_dir
+)
+
+fill_mask("An example of virus is<mask>.")
 
