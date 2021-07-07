@@ -1,3 +1,4 @@
+!curl -L https://raw.githubusercontent.com/PacktPublishing/Transformers-for-Natural-Language-Processing/master/Chapter03/kant.txt --output "kant.txt"
 !curl -L https://www.gutenberg.org/cache/epub/4962/pg4962.txt --output "TheStoryOfGermLife.txt"
 !curl -L https://www.gutenberg.org/cache/epub/27713/pg27713.txt --output "BacteriologicalTechnique.txt"
 
@@ -77,6 +78,12 @@ for p in range(0,lp):
 
 from transformers import LineByLineTextDataset
 
+dataset = LineByLineTextDataset(
+    tokenizer=tokenizer,
+    file_path="./kant.txt",
+    block_size=128,
+)
+
 dataset1 = LineByLineTextDataset(
     tokenizer=tokenizer,
     file_path="./TheStoryOfGermLife.txt",
@@ -100,7 +107,7 @@ from transformers import Trainer, TrainingArguments
 training_args = TrainingArguments(
     output_dir=output_dir,
     overwrite_output_dir=True,
-    num_train_epochs=1,
+    num_train_epochs=2,
     per_device_train_batch_size=64,
     save_steps=10_000,
     save_total_limit=2,
@@ -110,7 +117,7 @@ trainer = Trainer(
     model=model,
     args=training_args,
     data_collator=data_collator,
-    train_dataset=dataset1,
+    train_dataset=dataset
 )
 
 trainer.train()
@@ -127,5 +134,7 @@ fill_mask = pipeline(
     tokenizer=output_dir
 )
 
-fill_mask("An example of virus is<mask>.")
+fill_mask("Human thinking involves<mask>.")
+
+#fill_mask("An example of virus is<mask>.")
 
